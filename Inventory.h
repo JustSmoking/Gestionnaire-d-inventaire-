@@ -18,7 +18,7 @@ public:
     Objet(const std::string&, unsigned int, unsigned int);
     static bool printListObject();
     static bool addObject(const std::string&, unsigned int, unsigned int);
-    static bool deleteObject(const std::string&);
+    static bool deleteObject(std::string&);
     void modifyObject();
     static void resizeInvent(const int);
     std::string getNom() const;
@@ -26,6 +26,7 @@ public:
     int getPrix() const;
     static void freeInvent();
     static void modifyObject(const std::string&, const std::string&, unsigned int, unsigned int);
+    static void SaveInventToFile();
 private:
     std::string _nom;
     unsigned int _qte;

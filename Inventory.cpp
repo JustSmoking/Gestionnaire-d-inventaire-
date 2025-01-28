@@ -1,6 +1,6 @@
 #include "Inventory.h"
 #include <iostream>
-
+#include <fstream>
 /*
  * _count pour creer chaque index et le stocker dans le tableau et s'assurer quil soit le dernier element
  * creation d'un tableau dynamique de 3 elements
@@ -13,7 +13,7 @@ int n = 1;
 
 Objet* Objet::_invent = new Objet[n];
 
-Objet::Objet(): _nom("Aucun element"), _prix(0), _qte(0){};
+Objet::Objet(): _nom("Aucun"), _prix(0), _qte(0){};
 
 Objet::Objet(const std::string &nom, unsigned int qte, unsigned int prix) {
     if (_invent == nullptr)
@@ -40,19 +40,18 @@ int Objet::getQte() const{
 bool Objet::printListObject(){
     if (_invent == nullptr)
     {
-        std::cout << "Inventaire supprimer en memoire" << std::endl;
+        std::cout << "Inventaire Vide (FreeMemory)" << std::endl;
         return false;
     }
     
    for (unsigned int i = 0; i < n; i++) {
-       std::cout << " Objet No "  << i + 1 << " "<< _invent[i].getNom() << " " <<  _invent[i].getPrix() << " " << _invent[i].getQte() << std::endl;
+       std::cout << " Objet "<< _invent[i].getNom() << " " <<  _invent[i].getPrix() << " " << _invent[i].getQte() << std::endl;
    }
    return true;
 }
 
 void Objet::resizeInvent(const int resizeNumber) {
     n = resizeNumber;
-
     Objet *tampon = new Objet[resizeNumber]{Objet()};
     if (tampon == nullptr) {
         std::cerr << "Erreur lors de l'allocation de tampon" << std::endl;
@@ -79,15 +78,10 @@ void Objet::resizeInvent(const int resizeNumber) {
     delete[] tampon;
 }
 
-bool Objet::deleteObject(const std::string& name) {
+bool Objet::deleteObject(std::string& name) {
     for (unsigned int i = 0; i < n; i++) {
         if (_invent[i].getNom() == name) {
             _invent[i] = Objet();
-            break;
-        }
-        else {
-            std::cout << "Pas bon " << std::endl;
-            return false;
         }
     }
     Objet *temp = new Objet[n - 1]{Objet()};
@@ -170,4 +164,20 @@ void Objet::modifyObject(const std::string &name, const std::string &newName, un
             _invent[i]._prix = newPrix;
         }
     }
+}
+void Objet::SaveInventToFile() {
+    // Chemin d'acces aux fichiers
+    std::ofstream file("/Users/smoke/CLionProjects/fic");
+    if (!file)
+        std::cerr << "Erreur lors de l'ouverture/ecriture du fichier" << std::endl;
+
+    file << "=========Ajout=========" << "\n";
+    for (unsigned int i = 0; i < n; i++) {
+        file << _invent[i]._nom << " ";
+        file << _invent[i]._prix << " ";
+        file << _invent[i]._qte << "\n";
+
+    }
+    file.close();
+    std::cout << "Enregistrement dans le fichier !" << std::endl;
 }

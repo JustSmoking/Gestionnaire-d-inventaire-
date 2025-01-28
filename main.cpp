@@ -10,6 +10,7 @@ void displayMenu() {
     std::cout << "4. Supprimer un objet\n";
     std::cout << "5. Redimensionner l'inventaire\n";
     std::cout << "6. Libérer l'inventaire\n";
+    std::cout << "7. Enregistrez dans le fichier\n";
     std::cout << "0. Quitter\n";
     std::cout << "=================================================\n";
     std::cout << "Choisissez une option : ";
@@ -48,9 +49,11 @@ int main(){
                 std::string nom, newNom;
                 unsigned int newQte, newPrix;
                 std::cout << "Entrez le nom de l'objet à modifier : ";
+                std::cin.ignore();
                 std::getline(std::cin, nom);
                 std::cout << "Entrez le nouveau nom : ";
-                std::cin >> newNom;
+                std::cin.ignore();
+                std::getline(std::cin, newNom);
                 std::cout << "Entrez la nouvelle quantité : ";
                 std::cin >> newQte;
                 std::cout << "Entrez le nouveau prix : ";
@@ -61,11 +64,13 @@ int main(){
                 break;
             }
             case 4: {
-                std::string nom;
+                std::string nomS;
                 std::cout << "Entrez le nom de l'objet à supprimer : ";
-                std::cin >> nom;
+                std::cin.ignore();
+                std::getline(std::cin, nomS);
 
-                if (Objet::deleteObject(nom)) {
+
+                if (Objet::deleteObject(nomS)) {
                     std::cout << "Objet supprimé avec succès !\n";
                 } else {
                     std::cout << "Objet introuvable !\n";
@@ -84,6 +89,10 @@ int main(){
             case 6: {
                 Objet::freeInvent();
                 std::cout << "Inventaire libéré !\n";
+                break;
+            }
+            case 7: {
+                Objet::SaveInventToFile();
                 break;
             }
             case 0: {
